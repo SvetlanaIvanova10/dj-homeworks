@@ -1,29 +1,29 @@
 import datetime
-
+import os
+from django.conf import settings
 from django.shortcuts import render
 
 
-def file_list(request):
+def file_list(request, date: datetime = None):
     template_name = 'index.html'
-    
-    # Реализуйте алгоритм подготавливающий контекстные данные для шаблона по примеру:
+    path = settings.FILES_PATH
+    files = os.listdir(path=path)
+    files_list = map(lambda name: {'name': name,
+                              'ctime': datetime.date.fromtimestamp(os.stat(os.path.join(path, name)).st_ctime),
+                              'mtime': datetime.date.fromtimestamp(os.stat(os.path.join(path, name)).st_mtime)}, files)
     context = {
-        'files': [
-            {'name': 'file_name_1.txt',
-             'ctime': datetime.datetime(2018, 1, 1),
-             'mtime': datetime.datetime(2018, 1, 2)}
-        ],
-        'date': datetime.date(2018, 1, 1)  # Этот параметр необязательный
+        'files': list(files_list),
+        'date': date
     }
-
     return render(request, template_name, context)
 
 
 def file_content(request, name):
-    # Реализуйте алгоритм подготавливающий контекстные данные для шаблона по примеру:
+    with open(f'files/{name}') as file_name:
+        file_content = file_name.read()
     return render(
         request,
         'file_content.html',
-        context={'file_name': 'file_name_1.txt', 'file_content': 'File content!'}
+        context={'file_name': name, 'file_content': file_content}
     )
 
