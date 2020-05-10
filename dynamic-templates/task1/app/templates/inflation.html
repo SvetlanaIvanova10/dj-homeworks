@@ -17,9 +17,50 @@
       <div class="row">
         <h1 class="col s12">Инфляция в России</h1>
         <div class="col s12 m8">
-        
         <!-- Ваша логика -->
-
+          </td>
+              <table class="u-full-width">
+              <thead>
+                <tr>
+                  <th>Год</th>
+                  <th>Январь</th>
+                  <th>Февраль</th>
+                  <th>Март</th>
+                  <th>Апрель</th>
+                  <th>Май</th>
+                  <th>Июнь</th>
+                  <th>Июль</th>
+                  <th>Август</th>
+                  <th>Сентябрь</th>
+                  <th>Октябрь</th>
+                  <th>Ноябрь</th>
+                  <th>Декабрь</th>
+                  <th>Всего</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                {% for info in table_inflation %}
+                  {% for str_info in info %}
+                    {% if str_info < 0 %}
+                          <td class="green"> {{ str_info }} </td>
+                    {% elif str_info > 1 and str_info <= 2 %}
+                          <td class="red accent-1"> {{ str_info }} </td>
+                    {% elif str_info > 2 and str_info <= 5 %}
+                          <td class=" red accent-2"> {{ str_info }} </td>
+                    {% elif str_info > 5 %}
+                          <td class="red"> {{ str_info }} </td>
+                    {% elif forloop.last %}
+                          <td class="grey"> {{ str_info }} </td>
+                    {%else %}
+                          <td>{{ str_info }} </td>
+                    {% endif %}
+                  {% endfor %}
+                </tr>
+                {% endfor %}
+                </tr>
+              </tbody>
+            </table>
         </div>
       </div>
     {% endblock %}
