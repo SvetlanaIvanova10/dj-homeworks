@@ -22,6 +22,10 @@ def product_view(request, pk):
     reviews = Review.objects.filter(product=product)
     list_reviews = request.session['reviewed_products']
     if request.method == 'GET':
+        if pk in list_reviews:
+            is_review_exist = True
+            form = None
+        else:
             is_review_exist = False
             form = ReviewForm()
 
